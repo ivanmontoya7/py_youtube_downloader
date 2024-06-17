@@ -1,31 +1,50 @@
-from tkinter import Tk,Label,Button
+from tkinter import Tk,Label,Button,Entry,PhotoImage
+from pytube import YouTube
 
 """ si cambio la extensión a .pyw, la aplicacion se ejecuta al hacer doble click  """
+foto_miniatura=''
 
-def mensaje():
-    print("Mensaje del boton")
+def descargar():
+    enlace=link.get()
+    yt=YouTube(enlace)
+    yt.streams.get_highest_resolution().download()
+
+def previsualizar():
+    enlace=link.get()
+    yt=YouTube(enlace)
+    print(yt.thumbnail_url)
+
+def debug():
+    print(ventana.geometry())
+    print(lbl.winfo_height())
 
 ventana=Tk()
-""" poner icono """
-""" ventana.iconbitmap('icono.ico') """
-ventana.geometry("400x280")
+ventana.geometry("600x448")
 ventana.title("Aplicacion")
 ventana.minsize(400,280)
+ventana.iconbitmap(default='icono.ico')
 
-lbl=Label(ventana,text='Este es un [Label] tkinter')
-lbl.pack()
+img=PhotoImage(file='ardilla.png')
+lbl_img=Label(width=3000,height=3000,image=img)
+lbl_img.pack()
 
-btn=Button(ventana,text='Presiona este [Button] para mensaje',command=mensaje)
-btn.config(fg="red",bg="blue") 
-btn.pack()
-""" Tambien se puede btn=Button(fg="red",bg="blue",ventana,text='Presiona este [Button] para mensaje',command=mensaje)
-btn["fg"]="red" 
-btn["bg"]="blue"""
+lbl=Label(ventana,text='Enlace: ',borderwidth=2, relief="groove",font='Helvetica 12 bold')
+lbl.place(rely=0.1,relx=0.05,relwidth=0.2, relheight=0.1)
 
+link=Entry(ventana,font='Helvetica 12 bold')
+link.place(rely=0.1,relx=0.3,relwidth=0.6, height=45)
 
-btn2=Button(ventana,text='Salir',command=ventana.quit)
-btn2.place(relx=0.5,rely=0.5,width=100,height=30)
-"""se puede hacer con porcentajes, relx=0.1,rely=0.1,relwidth=0.1,relheight=0.1 son porcentajes respecto al padre, la ventana"""
+btn=Button(ventana,text='Descargar',command=descargar,font='Helvetica 12 bold')
+btn.place(relx=0.2,rely=0.5,relwidth=0.2, relheight=0.1)
+
+btn2=Button(ventana,text='Previsualizar (no funciona)',command=previsualizar,font='Helvetica 12 bold')
+btn2.place(relx=0.6,rely=0.5,relwidth=0.2, relheight=0.1)
+
+btn2=Button(ventana,text='Salir',command=ventana.quit,font='Helvetica 12 bold')
+btn2.place(relx=0.4,rely=0.8,relwidth=0.2, relheight=0.1)
+
+btn_dev=Button(ventana,text='debug',command=debug,font='Helvetica 12 bold')
+btn_dev.place(relx=0.8,rely=0.8,relwidth=0.2, relheight=0.1)
 
 
 ventana.mainloop()
